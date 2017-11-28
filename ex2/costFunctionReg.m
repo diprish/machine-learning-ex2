@@ -23,35 +23,45 @@ n = length(theta);
 %hypothesis
 h = sigmoid(X * theta);
 
-for i = 1 : m
-    % The cost for the ith term before regularization
-    J = J - ( y(i) * log(h(i)) )   -  ( (1 - y(i)) * log(1 - h(i)) );
+% Penalty
+theta_2_n = [0;theta(2:size(theta),:)];
+p = lambda*(theta_2_n'*theta_2_n)/(2*m);
 
-    % Adding regularization term
-    for j = 2 : n
-        J = J + (lambda / (2*m) ) * ( theta(j) )^2;
-    end            
-end
-J = J/m;
+J = ( (-1) * y' * log(h) - (1-y)' * log(1-h) ) / m + p;
 
-% ----------------------2. Compute the gradients-------------------
-
-j = 1;
-
-for i = 1 : m
-    grad(j) = grad(j) + ( h(i) - y(i) ) * X(i,j);
-end
-
-for j = 2 : n    
-    for i = 1 : m
-        grad(j) = grad(j) + ( h(i) - y(i) ) * X(i,j);
-    end
-    grad(j) = grad(j) + lambda * theta(j); % Change    
-end
-
-grad = (1/m) * grad;
-
+% ----------------------1. Compute the Grad-------------------
+% calculate grads
+grad = (X'*(h - y)+lambda*theta_2_n)/m;
 
 % =============================================================
+
+%%Another Approach
+%for i = 1 : m
+%    % The cost for the ith term before regularization
+%    J = J - ( y(i) * log(h(i)) )   -  ( (1 - y(i)) * log(1 - h(i)) );
+%
+%    % Adding regularization term
+%    for j = 2 : n
+%        J = J + (lambda / (2*m) ) * ( theta(j) )^2;
+%    end            
+%end
+%J = J/m;
+%
+%% ----------------------2. Compute the gradients-------------------
+%
+%j = 1;
+%
+%for i = 1 : m
+%    grad(j) = grad(j) + ( h(i) - y(i) ) * X(i,j);
+%end
+%
+%for j = 2 : n    
+%    for i = 1 : m
+%        grad(j) = grad(j) + ( h(i) - y(i) ) * X(i,j);
+%    end
+%    grad(j) = grad(j) + lambda * theta(j); % Change    
+%end
+%
+%grad = (1/m) * grad;
 
 end
