@@ -17,5 +17,6 @@ for i = 1:degree
         out(:, end+1) = (X1.^(i-j)).*(X2.^j);
     end
 end
+size(out)
 
 end
